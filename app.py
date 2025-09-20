@@ -190,7 +190,12 @@ def main():
                     with tab1:
                         match_percentage_str = response_json.get("JD Match", "0%")
                         try:
-                            score_value = int(match_percentage_str.strip('%'))
+                            # ✅ Fix: handle both int and string values safely
+                            if isinstance(match_percentage_str, int):
+                                score_value = match_percentage_str
+                            else:
+
+                                score_value = int(str(match_percentage_str).strip('%'))
                             fig = create_donut_chart(score_value)
                             st.plotly_chart(fig, use_container_width=True)
                         except (ValueError, TypeError):
@@ -223,3 +228,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
